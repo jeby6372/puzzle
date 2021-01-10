@@ -1,10 +1,9 @@
 from threading import Thread
 
-from models.exception import PathCompleted, EmptyPath
 from models.scanner import PathScanner
 
 '''
-Finds a next level path for the matrix current cell
+path discovering for one cell
 '''
 
 
@@ -29,6 +28,7 @@ class Process(Thread):
         except EmptyPath as ep:
             print('Empty path for', ep.expression)
     '''
+
     def run(self):
         print('running', self.name)
         self.scanner.scan[self.matrix.vector[self.cell.row][self.cell.col]](self.cell)

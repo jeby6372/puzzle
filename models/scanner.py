@@ -1,6 +1,5 @@
-from matrix import Matrix, Cell
-from models.exception import EmptyPath, PathCompleted
-from models.responses import Path
+from matrix import Cell
+from models.exception import EmptyPath, PathCompleted, CellFound
 
 
 class PathScanner(object):
@@ -22,98 +21,81 @@ class PathScanner(object):
         }
 
     def to_north(self, from_cell):
-        if from_cell.row - 1 >= 0:
-            out = Cell(from_cell.row - 1, from_cell.col)
-            if self.matrix.data[from_cell.row - 1][from_cell.col] == 0:
-                self.path.append(out)
-            self.to_north(out)
+        y = from_cell.row - 1
+        x = from_cell.col
+        if y >= 0:
+            self.__check(x, y, from_cell, self.to_north)
         else:
-            if len(self.path) == 0:
-                raise EmptyPath(from_cell)
-            else:
-                raise PathCompleted(self.path)
+            self.__complete(from_cell)
 
     def to_north_east(self, from_cell):
-        if from_cell.row - 1 >= 0 and from_cell.col + 1 < self.matrix.dim:
-            out = Cell(from_cell.row - 1, from_cell.col + 1)
-            if self.matrix.data[from_cell.row - 1][from_cell.col + 1] == 0:
-                self.path.append(out)
-            self.to_north_east(out)
+        y = from_cell.row - 1
+        x = from_cell.col + 1
+        if y >= 0 and x < self.matrix.dim:
+            self.__check(x, y, from_cell, self.to_north_east)
         else:
-            if len(self.path) == 0:
-                raise EmptyPath(from_cell)
-            else:
-                raise PathCompleted(self.path)
+            self.__complete(from_cell)
 
     def to_north_west(self, from_cell):
-        if from_cell.row - 1 >= 0 and from_cell.col - 1 >= 0:
-            out = Cell(from_cell.row - 1, from_cell.col - 1)
-            if self.matrix.data[from_cell.row - 1][from_cell.col - 1] == 0:
-                self.path.append(out)
-            self.to_north_west(out)
+        y = from_cell.row - 1
+        x = from_cell.col - 1
+        if y >= 0 and x >= 0:
+            self.__check(x, y, from_cell, self.to_north_west)
         else:
-            if len(self.path) == 0:
-                raise EmptyPath(from_cell)
-            else:
-                raise PathCompleted(self.path)
+            self.__complete(from_cell)
 
     def to_south(self, from_cell):
-        if from_cell.row + 1 < self.matrix.dim:
-            out = Cell(from_cell.row + 1, from_cell.col)
-            if self.matrix.data[from_cell.row + 1][from_cell.col] == 0:
-                self.path.append(out)
-            self.to_south(out)
+        y = from_cell.row + 1
+        x = from_cell.col
+        if y < self.matrix.dim:
+            self.__check(x, y, from_cell, self.to_south)
         else:
-            if len(self.path) == 0:
-                raise EmptyPath(from_cell)
-            else:
-                raise PathCompleted(self.path)
+            self.__complete(from_cell)
 
     def to_south_east(self, from_cell):
-
-        if from_cell.row + 1 < self.matrix.dim and from_cell.col + 1 < self.matrix.dim:
-            out = Cell(from_cell.row + 1, from_cell.col + 1)
-            if self.matrix.data[from_cell.row + 1][from_cell.col + 1] == 0:
-                self.path.append(out)
-            self.to_south_east(out)
+        y = from_cell.row + 1
+        x = from_cell.col + 1
+        if y < self.matrix.dim and x < self.matrix.dim:
+            self.__check(x, y, from_cell, self.to_south_east)
         else:
-            if len(self.path) == 0:
-                raise EmptyPath(from_cell)
-            else:
-                raise PathCompleted(self.path)
+            self.__complete(from_cell)
 
     def to_south_west(self, from_cell):
-        if from_cell.row + 1 < self.matrix.dim and from_cell.col - 1 >= 0:
-            out = Cell(from_cell.row + 1, from_cell.col - 1)
-            if self.matrix.data[from_cell.row + 1][from_cell.col - 1] == 0:
-                self.path.append(out)
-            self.to_south_west(out)
+        y = from_cell.row + 1
+        x = from_cell.col - 1
+        if y < self.matrix.dim and x >= 0:
+            self.__check(x, y, from_cell, self.to_south_west)
         else:
-            if len(self.path) == 0:
-                raise EmptyPath(from_cell)
-            else:
-                raise PathCompleted(self.path)
+            self.__complete(from_cell)
 
     def to_east(self, from_cell):
-        if from_cell.col + 1 < self.matrix.dim:
-            out = Cell(from_cell.row, from_cell.col + 1)
-            if self.matrix.data[from_cell.row][from_cell.col + 1] == 0:
-                self.path.append(out)
-            self.to_east(out)
+        y = from_cell.row
+        x = from_cell.col + 1
+        if y < self.matrix.dim:
+            self.__check(x, y, from_cell, self.to_east)
         else:
-            if len(self.path) == 0:
-                raise EmptyPath(from_cell)
-            else:
-                raise PathCompleted(self.path)
+            self.__complete(from_cell)
 
     def to_west(self, from_cell):
-        if from_cell.col - 1 >= 0:
-            out = Cell(from_cell.row, from_cell.col - 1)
-            if self.matrix.data[from_cell.row][from_cell.col - 1] == 0:
-                self.path.append(out)
-            self.to_west(out)
+        y = from_cell.row
+        x = from_cell.col - 1
+        if x >= 0:
+            self.__check(x, y, from_cell, self.to_west)
         else:
-            if len(self.path) == 0:
-                raise EmptyPath(from_cell)
-            else:
-                raise PathCompleted(self.path)
+            self.__complete(from_cell)
+
+    def __check(self, x, y, from_cell, func):
+        out = Cell(y, x, self.matrix.data[y][x])
+        if self.matrix.data[y][x] == 0:
+            self.path.append(out)
+        if self.matrix.data[y][x] == from_cell.value + 1:
+            raise CellFound(out)
+        func(out)
+
+    def __complete(self, from_cell):
+        if len(self.path) == 0:
+            raise EmptyPath(from_cell)
+        elif len(self.path) == 1:
+            raise CellFound(self.path[0])
+        else:
+            raise PathCompleted(self.path)
