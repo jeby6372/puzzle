@@ -1,6 +1,6 @@
 from threading import Thread
 
-from models.scanner import PathScanner
+from scanner import PathScanner
 
 '''
 path discovering for one cell
@@ -11,6 +11,7 @@ class Process(Thread):
     matrix = None
     cell = None
     scanner = None
+    data = []
 
     def __init__(self, matrix, cell):
         super().__init__(daemon=True)

@@ -1,5 +1,6 @@
-from matrix import Cell
+
 from models.exception import EmptyPath, PathCompleted, CellFound
+from models.matrix import Cell
 
 
 class PathScanner(object):

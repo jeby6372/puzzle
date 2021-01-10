@@ -1,7 +1,7 @@
 from models.exception import PathCompleted, EmptyPath, CellFound
-from models.scanner import PathScanner
-from matrix import Matrix, Cell
-from models.process import Process
+from models.matrix import Matrix, Cell
+from process import Process
+from runner import Runner
 
 conf_7 = '''7
 1 O;0 ZO;0 Z;0 ZW;0 O;0 W;0 ZW;
@@ -24,12 +24,12 @@ conf_3 = '''3
 0 Z;0 N;0 N;
 0 O;0 NO;9;'''
 
-# Press the green button in the gutter to run the script.
+
 if __name__ == '__main__':
     # conf = Array(sys.argv[1:]).join()
     # with open('input.txt') as f:
     #   conf = f.read()
-    matrix = Matrix(conf_7)
+    matrix = Matrix(conf_5)
     print('-> data', matrix.data)
     print('-> vector', matrix.vector)
 
@@ -37,21 +37,9 @@ if __name__ == '__main__':
     x = 0
     y = 0
     ref = Cell(y, x, matrix.data[y][x])
-    p = Process(matrix, ref)
 
-
-    # Test
-    try:
-        p.run()
-    except PathCompleted as pc:
-        print('path', [(c.row, c.col) for c in pc.expression])
-    except EmptyPath as ep:
-        print('Empty path for', ep.expression)
-    except CellFound as cf:
-        print('Cell found', cf.expression.row, cf.expression.col, cf.expression.value)
-        matrix.data[cf.expression.row][cf.expression.col] = ref.value + 1
-
-    print('output', matrix.data)
+    runner = Runner()
+    runner.launch(matrix, ref)
 
     # for ri, row in enumerate(matrix.vector):
     #     for ci, col in enumerate(row):
@@ -59,4 +47,3 @@ if __name__ == '__main__':
     #         # print('check', cell.__dict__)
     #         mapper.scan[matrix.vector[ri][ci]](cell)
     #         matrix.path = []
-
