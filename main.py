@@ -10,7 +10,7 @@ conf_7 = '''7
 0 N;0 O;0 W;0 Z;0 NO;0 N;0 NW;
 0 O;0 O;0 ZW;0 W;0 NW;0 N;0 ZW;
 0 NO;0 O;0 N;0 NW;0 W;0 ZO;0 NW;
-0 O;0 NW;0 NO;O W;0 N;0 NW;49;
+0 O;0 NW;0 NO;0 W;0 N;0 NW;49;
 '''
 conf_5 = '''5
 1 Z;0 O;0 ZO;0 W;0 W;
@@ -38,6 +38,7 @@ if __name__ == '__main__':
     y = 0
     ref = Cell(y, x, matrix.data[y][x])
     p = Process(matrix, ref)
+
 
     # Test
     try:

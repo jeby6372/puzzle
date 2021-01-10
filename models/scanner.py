@@ -71,7 +71,7 @@ class PathScanner(object):
     def to_east(self, from_cell):
         y = from_cell.row
         x = from_cell.col + 1
-        if y < self.matrix.dim:
+        if x < self.matrix.dim:
             self.__check(x, y, from_cell, self.to_east)
         else:
             self.__complete(from_cell)
@@ -85,6 +85,7 @@ class PathScanner(object):
             self.__complete(from_cell)
 
     def __check(self, x, y, from_cell, func):
+        # print(x,y,func)
         out = Cell(y, x, self.matrix.data[y][x])
         if self.matrix.data[y][x] == 0:
             self.path.append(out)

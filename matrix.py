@@ -16,7 +16,6 @@ class Matrix(object):
 
     def __init__(self, conf):
         self.dim = int(conf.splitlines()[0])
-        self.path = []
         out = []
         for line in conf.splitlines()[1:self.dim + 1]:
             row = [c for c in line.split(';') if c != '']
