@@ -9,6 +9,11 @@ class Cell(object):
         self.value = value
 
 
+class Completed(object):
+    def __init__(self, result):
+        self.result = result
+
+
 class Matrix(object):
     dim = 0
     data = []
@@ -22,5 +27,4 @@ class Matrix(object):
             out.append(row)
         self.data = [[int(cell.split()[0]) for cell in row] for row in out]
         self.vector = [[cell.split()[1] for cell in row if len(cell.split()) > 1] for row in out]
-
-
+        self.vector[self.dim - 1].append('END')

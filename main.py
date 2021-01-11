@@ -1,8 +1,6 @@
-from models.exception import PathCompleted, EmptyPath, CellFound
-from models.matrix import Matrix, Cell
-from process import Process
-from runner import Runner
-from scanner import PathScanner
+from models.exception import Completed
+from models.matrix import Matrix
+from resolver import Resolver
 
 conf_7 = '''7
 1 O;0 ZO;0 Z;0 ZW;0 O;0 W;0 ZW;
@@ -29,23 +27,16 @@ if __name__ == '__main__':
     # conf = Array(sys.argv[1:]).join()
     # with open('input.txt') as f:
     #   conf = f.read()
-    matrix = Matrix(conf_5)
-    scanner = PathScanner(matrix.data)
+    matrix = Matrix(conf_3)
     print('-> data', matrix.data)
     print('-> vector', matrix.vector)
 
-    # Input cell
-    y = 2  # row
-    x = 1  # col
-    ref = Cell(y, x, matrix.data[y][x])
-
-    result = scanner.scan[matrix.vector[ref.row][ref.col]](ref)
-    for c in result:
-        print(c.__dict__)
-
-    # for ri, row in enumerate(matrix.vector):
-    #     for ci, col in enumerate(row):
-    #         cell = Cell(ri, ci, matrix.data[ri][ci])
-    #         # print('check', cell.__dict__)
-    #         mapper.scan[matrix.vector[ri][ci]](cell)
-    #         matrix.path = []
+    r = Resolver(matrix)
+    r.current_cell = r.get_entry_cell()
+    print('start', r.current_cell.__dict__)
+    try:
+        r.walk(0)
+    except Completed as c:
+        # print(c.expression)
+        for r in c.expression:
+            print(' '.join(str(i) for i in r))

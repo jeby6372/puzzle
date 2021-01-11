@@ -1,4 +1,4 @@
-from models.exception import EmptyPath, PathCompleted, CellFound
+from models.exception import Completed
 from models.matrix import Cell
 
 
@@ -22,85 +22,93 @@ class PathScanner(object):
         }
 
     def to_north(self, from_cell):
-        print('to north', from_cell.__dict__)
+        # print('to north', from_cell.__dict__)
+        path = []
         x = from_cell.col
         for i in reversed(range(from_cell.row)):
             out = Cell(i, x, self.data[i][x])
-            if self.data[i][x] == 0:
-                self.path.append(out)
-        return self.path
+            if self.data[i][x] == 0 or self.data[i][x] == pow(self.dim, 2):
+                path.append(out)
+        return path
 
     def to_east(self, from_cell):
-        print('to east', from_cell.__dict__)
+        # print('to east', from_cell.__dict__)
+        path = []
         x = from_cell.row
         for i in range(from_cell.col + 1, self.dim):
             out = Cell(x, i, self.data[x][i])
-            if self.data[x][i] == 0:
-                self.path.append(out)
-        return self.path
+            if self.data[x][i] == 0 or self.data[x][i] == pow(self.dim, 2):
+                path.append(out)
+        return path
 
     def to_south(self, from_cell):
-        print('to south', from_cell.__dict__)
+        # print('to south', from_cell.__dict__)
+        path = []
         x = from_cell.col
         for i in range(from_cell.row + 1, self.dim):
             out = Cell(i, x, self.data[i][x])
-            if self.data[i][x] == 0:
-                self.path.append(out)
-        return self.path
+            if self.data[i][x] == 0 or self.data[i][x] == pow(self.dim, 2):
+                path.append(out)
+        return path
 
     def to_west(self, from_cell):
-        print('to west', from_cell.__dict__)
+        # print('to west', from_cell.__dict__)
+        path = []
         x = from_cell.row
         for i in reversed(range(from_cell.col)):
             out = Cell(x, i, self.data[x][i])
-            if self.data[x][i] == 0:
-                self.path.append(out)
-        return self.path
+            if self.data[x][i] == 0 or self.data[x][i] == pow(self.dim, 2):
+                path.append(out)
+        return path
 
     def to_north_east(self, from_cell):
-        print('to north-east', from_cell.__dict__)
+        # print('to north-east', from_cell.__dict__)
+        path = []
         x = from_cell.row
         for i in range(from_cell.col + 1, self.dim):
             x -= 1
             if x < 0:
                 break
             out = Cell(x, i, self.data[x][i])
-            if self.data[x][i] == 0:
-                self.path.append(out)
-        return self.path
+            if self.data[x][i] == 0 or self.data[x][i] == pow(self.dim, 2):
+                path.append(out)
+        return path
 
     def to_north_west(self, from_cell):
-        print('to north-west', from_cell.__dict__)
+        # print('to north-west', from_cell.__dict__)
+        path = []
         x = from_cell.row
         for i in reversed(range(from_cell.col)):
             x -= 1
             if x < 0:
                 break
             out = Cell(x, i, self.data[x][i])
-            if self.data[x][i] == 0:
-                self.path.append(out)
-        return self.path
+            if self.data[x][i] == 0 or self.data[x][i] == pow(self.dim, 2):
+                path.append(out)
+        return path
 
     def to_south_east(self, from_cell):
-        print('to south-east', from_cell.__dict__)
+        # print('to south-east', from_cell.__dict__)
+        path = []
         x = from_cell.row
         for i in range(from_cell.col + 1, self.dim):
             x += 1
             if x > self.dim - 1:
                 break
             out = Cell(x, i, self.data[x][i])
-            if self.data[x][i] == 0:
-                self.path.append(out)
-        return self.path
+            if self.data[x][i] == 0 or self.data[x][i] == pow(self.dim, 2):
+                path.append(out)
+        return path
 
     def to_south_west(self, from_cell):
-        print('to south-west', from_cell.__dict__)
+        # print('to south-west', from_cell.__dict__)
+        path = []
         x = from_cell.row
         for i in reversed(range(from_cell.col)):
             x += 1
-            if x > self.dim -1:
+            if x > self.dim - 1:
                 break
             out = Cell(x, i, self.data[x][i])
-            if self.data[x][i] == 0:
-                self.path.append(out)
-        return self.path
+            if self.data[x][i] == 0 or self.data[x][i] == pow(self.dim, 2):
+                path.append(out)
+        return path
