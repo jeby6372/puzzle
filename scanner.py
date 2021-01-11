@@ -1,15 +1,15 @@
-
 from models.exception import EmptyPath, PathCompleted, CellFound
 from models.matrix import Cell
 
 
 class PathScanner(object):
-    matrix = None
+    data = None
+    dim = 0
     path = []
 
-    def __init__(self, matrix):
-        self.matrix = matrix
-        # self.path = Path()
+    def __init__(self, data):
+        self.data = data
+        self.dim = len(data)
         self.scan = {
             'N': self.to_north,
             'NO': self.to_north_east,
@@ -22,82 +22,85 @@ class PathScanner(object):
         }
 
     def to_north(self, from_cell):
-        y = from_cell.row - 1
+        print('to north', from_cell.__dict__)
         x = from_cell.col
-        if y >= 0:
-            self.__check(x, y, from_cell, self.to_north)
-        else:
-            self.__complete(from_cell)
-
-    def to_north_east(self, from_cell):
-        y = from_cell.row - 1
-        x = from_cell.col + 1
-        if y >= 0 and x < self.matrix.dim:
-            self.__check(x, y, from_cell, self.to_north_east)
-        else:
-            self.__complete(from_cell)
-
-    def to_north_west(self, from_cell):
-        y = from_cell.row - 1
-        x = from_cell.col - 1
-        if y >= 0 and x >= 0:
-            self.__check(x, y, from_cell, self.to_north_west)
-        else:
-            self.__complete(from_cell)
-
-    def to_south(self, from_cell):
-        y = from_cell.row + 1
-        x = from_cell.col
-        if y < self.matrix.dim:
-            self.__check(x, y, from_cell, self.to_south)
-        else:
-            self.__complete(from_cell)
-
-    def to_south_east(self, from_cell):
-        y = from_cell.row + 1
-        x = from_cell.col + 1
-        if y < self.matrix.dim and x < self.matrix.dim:
-            self.__check(x, y, from_cell, self.to_south_east)
-        else:
-            self.__complete(from_cell)
-
-    def to_south_west(self, from_cell):
-        y = from_cell.row + 1
-        x = from_cell.col - 1
-        if y < self.matrix.dim and x >= 0:
-            self.__check(x, y, from_cell, self.to_south_west)
-        else:
-            self.__complete(from_cell)
+        for i in reversed(range(from_cell.row)):
+            out = Cell(i, x, self.data[i][x])
+            if self.data[i][x] == 0:
+                self.path.append(out)
+        return self.path
 
     def to_east(self, from_cell):
-        y = from_cell.row
-        x = from_cell.col + 1
-        if x < self.matrix.dim:
-            self.__check(x, y, from_cell, self.to_east)
-        else:
-            self.__complete(from_cell)
+        print('to east', from_cell.__dict__)
+        x = from_cell.row
+        for i in range(from_cell.col + 1, self.dim):
+            out = Cell(x, i, self.data[x][i])
+            if self.data[x][i] == 0:
+                self.path.append(out)
+        return self.path
+
+    def to_south(self, from_cell):
+        print('to south', from_cell.__dict__)
+        x = from_cell.col
+        for i in range(from_cell.row + 1, self.dim):
+            out = Cell(i, x, self.data[i][x])
+            if self.data[i][x] == 0:
+                self.path.append(out)
+        return self.path
 
     def to_west(self, from_cell):
-        y = from_cell.row
-        x = from_cell.col - 1
-        if x >= 0:
-            self.__check(x, y, from_cell, self.to_west)
-        else:
-            self.__complete(from_cell)
+        print('to west', from_cell.__dict__)
+        x = from_cell.row
+        for i in reversed(range(from_cell.col)):
+            out = Cell(x, i, self.data[x][i])
+            if self.data[x][i] == 0:
+                self.path.append(out)
+        return self.path
 
-    def __check(self, x, y, from_cell, func):
-        # print(x,y,func)
-        out = Cell(y, x, self.matrix.data[y][x])
-        if self.matrix.data[y][x] == 0:
-            self.path.append(out)
-        if self.matrix.data[y][x] == from_cell.value + 1:
-            raise CellFound(out)
-        func(out)
+    def to_north_east(self, from_cell):
+        print('to north-east', from_cell.__dict__)
+        x = from_cell.row
+        for i in range(from_cell.col + 1, self.dim):
+            x -= 1
+            if x < 0:
+                break
+            out = Cell(x, i, self.data[x][i])
+            if self.data[x][i] == 0:
+                self.path.append(out)
+        return self.path
 
-    def __complete(self, from_cell):
-        if len(self.path) == 0:
-            raise EmptyPath(from_cell)
-        elif len(self.path) == 1:
-            raise CellFound(self.path[0])
-        else:
-            raise PathCompleted(self.path)
+    def to_north_west(self, from_cell):
+        print('to north-west', from_cell.__dict__)
+        x = from_cell.row
+        for i in reversed(range(from_cell.col)):
+            x -= 1
+            if x < 0:
+                break
+            out = Cell(x, i, self.data[x][i])
+            if self.data[x][i] == 0:
+                self.path.append(out)
+        return self.path
+
+    def to_south_east(self, from_cell):
+        print('to south-east', from_cell.__dict__)
+        x = from_cell.row
+        for i in range(from_cell.col + 1, self.dim):
+            x += 1
+            if x > self.dim - 1:
+                break
+            out = Cell(x, i, self.data[x][i])
+            if self.data[x][i] == 0:
+                self.path.append(out)
+        return self.path
+
+    def to_south_west(self, from_cell):
+        print('to south-west', from_cell.__dict__)
+        x = from_cell.row
+        for i in reversed(range(from_cell.col)):
+            x += 1
+            if x > self.dim -1:
+                break
+            out = Cell(x, i, self.data[x][i])
+            if self.data[x][i] == 0:
+                self.path.append(out)
+        return self.path

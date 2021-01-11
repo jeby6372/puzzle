@@ -2,6 +2,7 @@ from models.exception import PathCompleted, EmptyPath, CellFound
 from models.matrix import Matrix, Cell
 from process import Process
 from runner import Runner
+from scanner import PathScanner
 
 conf_7 = '''7
 1 O;0 ZO;0 Z;0 ZW;0 O;0 W;0 ZW;
@@ -24,22 +25,23 @@ conf_3 = '''3
 0 Z;0 N;0 N;
 0 O;0 NO;9;'''
 
-
 if __name__ == '__main__':
     # conf = Array(sys.argv[1:]).join()
     # with open('input.txt') as f:
     #   conf = f.read()
     matrix = Matrix(conf_5)
+    scanner = PathScanner(matrix.data)
     print('-> data', matrix.data)
     print('-> vector', matrix.vector)
 
     # Input cell
-    x = 0
-    y = 0
+    y = 2  # row
+    x = 1  # col
     ref = Cell(y, x, matrix.data[y][x])
 
-    runner = Runner()
-    runner.launch(matrix, ref)
+    result = scanner.scan[matrix.vector[ref.row][ref.col]](ref)
+    for c in result:
+        print(c.__dict__)
 
     # for ri, row in enumerate(matrix.vector):
     #     for ci, col in enumerate(row):
