@@ -1,4 +1,4 @@
-from models.exception import Completed
+from models.exceptions import Completed
 from models.matrix import Cell
 
 

@@ -1,4 +1,4 @@
-from models.exception import Completed
+from models.exceptions import Completed
 from models.matrix import Matrix
 from resolver import Resolver
 
@@ -27,9 +27,12 @@ if __name__ == '__main__':
     # conf = Array(sys.argv[1:]).join()
     # with open('input.txt') as f:
     #   conf = f.read()
-    matrix = Matrix(conf_3)
+    matrix = Matrix(conf_5)
     print('-> data', matrix.data)
     print('-> vector', matrix.vector)
+    print('-> constants', matrix.constants)
+
+    # exit(0)
 
     r = Resolver(matrix)
     r.current_cell = r.get_entry_cell()
@@ -37,6 +40,5 @@ if __name__ == '__main__':
     try:
         r.walk(0)
     except Completed as c:
-        # print(c.expression)
         for r in c.expression:
             print(' '.join(str(i) for i in r))
