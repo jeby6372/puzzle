@@ -17,7 +17,7 @@ class Process(Thread):
         super().__init__(daemon=True)
         self.matrix = matrix
         self.cell = cell
-        self.scanner = PathScanner(matrix)
+        self.scanner = PathScanner(matrix.data)
         self.name = str(cell.row) + '_' + str(cell.col)
         # super().__init__(length, length)
 
