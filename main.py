@@ -27,7 +27,7 @@ if __name__ == '__main__':
     # conf = Array(sys.argv[1:]).join()
     # with open('input.txt') as f:
     #   conf = f.read()
-    matrix = Matrix(conf_5)
+    matrix = Matrix(conf_3)
     print('-> data', matrix.data)
     print('-> vector', matrix.vector)
     print('-> constants', matrix.constants)
@@ -35,10 +35,11 @@ if __name__ == '__main__':
     # exit(0)
 
     r = Resolver(matrix)
-    r.current_cell = r.get_entry_cell()
+    graph_index = 0
     print('start', r.current_cell.__dict__)
+    # while True:
     try:
-        r.walk(0)
+        r.walk(graph_index)
     except Completed as c:
         for r in c.expression:
             print(' '.join(str(i) for i in r))

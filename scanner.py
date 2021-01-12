@@ -26,9 +26,9 @@ class PathScanner(object):
         path = []
         x = from_cell.col
         for i in reversed(range(from_cell.row)):
-            out = Cell(i, x, self.data[i][x])
-            if self.data[i][x] == 0 or self.data[i][x] == pow(self.dim, 2):
-                path.append(out)
+            # out = Cell(i, x, self.data[i][x])
+            out = (i, x)
+            path.append(out)
         return path
 
     def to_east(self, from_cell):
@@ -36,9 +36,9 @@ class PathScanner(object):
         path = []
         x = from_cell.row
         for i in range(from_cell.col + 1, self.dim):
-            out = Cell(x, i, self.data[x][i])
-            if self.data[x][i] == 0 or self.data[x][i] == pow(self.dim, 2):
-                path.append(out)
+            # out = Cell(x, i, self.data[x][i])
+            out = (x, i)
+            path.append(out)
         return path
 
     def to_south(self, from_cell):
@@ -46,9 +46,9 @@ class PathScanner(object):
         path = []
         x = from_cell.col
         for i in range(from_cell.row + 1, self.dim):
-            out = Cell(i, x, self.data[i][x])
-            if self.data[i][x] == 0 or self.data[i][x] == pow(self.dim, 2):
-                path.append(out)
+            # out = Cell(i, x, self.data[i][x])
+            out = (i, x)
+            path.append(out)
         return path
 
     def to_west(self, from_cell):
@@ -56,9 +56,9 @@ class PathScanner(object):
         path = []
         x = from_cell.row
         for i in reversed(range(from_cell.col)):
-            out = Cell(x, i, self.data[x][i])
-            if self.data[x][i] == 0 or self.data[x][i] == pow(self.dim, 2):
-                path.append(out)
+            # out = Cell(x, i, self.data[x][i])
+            out = (x, i)
+            path.append(out)
         return path
 
     def to_north_east(self, from_cell):
@@ -69,9 +69,9 @@ class PathScanner(object):
             x -= 1
             if x < 0:
                 break
-            out = Cell(x, i, self.data[x][i])
-            if self.data[x][i] == 0 or self.data[x][i] == pow(self.dim, 2):
-                path.append(out)
+            # out = Cell(x, i, self.data[x][i])
+            out = (x, i)
+            path.append(out)
         return path
 
     def to_north_west(self, from_cell):
@@ -82,9 +82,9 @@ class PathScanner(object):
             x -= 1
             if x < 0:
                 break
-            out = Cell(x, i, self.data[x][i])
-            if self.data[x][i] == 0 or self.data[x][i] == pow(self.dim, 2):
-                path.append(out)
+            # out = Cell(x, i, self.data[x][i])
+            out = (x, i)
+            path.append(out)
         return path
 
     def to_south_east(self, from_cell):
@@ -95,9 +95,9 @@ class PathScanner(object):
             x += 1
             if x > self.dim - 1:
                 break
-            out = Cell(x, i, self.data[x][i])
-            if self.data[x][i] == 0 or self.data[x][i] == pow(self.dim, 2):
-                path.append(out)
+            # out = Cell(x, i, self.data[x][i])
+            out = (x, i)
+            path.append(out)
         return path
 
     def to_south_west(self, from_cell):
@@ -109,6 +109,7 @@ class PathScanner(object):
             if x > self.dim - 1:
                 break
             out = Cell(x, i, self.data[x][i])
-            if self.data[x][i] == 0 or self.data[x][i] == pow(self.dim, 2):
-                path.append(out)
+            out = (x, i)
+            path.append(out)
         return path
+

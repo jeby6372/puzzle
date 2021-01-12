@@ -18,7 +18,7 @@ class Matrix(object):
     dim = 0
     data = []
     vector = []
-    constants = []
+    constants = {}
 
     def __init__(self, conf):
         self.dim = int(conf.splitlines()[0])
@@ -28,6 +28,10 @@ class Matrix(object):
             out.append(row)
         self.data = [[int(cell.split()[0]) for cell in row] for row in out]
         # initial grid digits different from first and last
-        self.constants = [[int(cell.split()[0]) for cell in row if int(cell.split()[0]) > 0] for row in out]
+        for row, digits in enumerate(self.data):
+            for col, digit in enumerate(digits):
+                if digit > 0:
+                    self.constants[(row, col)] = digit
+
         self.vector = [[cell.split()[1] for cell in row if len(cell.split()) > 1] for row in out]
         self.vector[self.dim - 1].append('END')
