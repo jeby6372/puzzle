@@ -4,6 +4,13 @@ class Completed(Exception):
         self.expression = expression
 
 
+class InvalidPath(Exception):
+
+    def __init__(self, expression, message):
+        self.expression = expression
+        self.message = message
+
+
 class ConstantMismatch(Exception):
 
     def __init__(self, expression, message):

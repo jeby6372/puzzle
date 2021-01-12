@@ -1,4 +1,4 @@
-from models.exceptions import Completed
+from models.exceptions import Completed, InvalidPath, ConstantMismatch
 from models.matrix import Matrix
 from resolver import Resolver
 
@@ -23,23 +23,64 @@ conf_3 = '''3
 0 Z;0 N;0 N;
 0 O;0 NO;9;'''
 
+
+def revert():
+    # remove edge from current node and from parent if single
+    i = -1
+    node = path[i]
+    print('removing edge to', r.tree_map[node][r.tree_map[node].index(cell)], 'from node', node)
+    del (r.tree_map[node][r.tree_map[node].index(cell)])
+    while True:
+        if len(r.tree_map[node]) == 0:
+            parent = path[i-1]
+            print('removing edge to', r.tree_map[parent][r.tree_map[parent].index(node)], 'from node', parent)
+            del (r.tree_map[parent][r.tree_map[parent].index(node)])
+            i -= 1
+            node = path[i]
+        else:
+            break
+
+
 if __name__ == '__main__':
     # conf = Array(sys.argv[1:]).join()
     # with open('input.txt') as f:
     #   conf = f.read()
-    matrix = Matrix(conf_3)
+
+    matrix = Matrix(conf_5)
+    r = Resolver(matrix)
+    path = None
+    cell = None
     print('-> data', matrix.data)
     print('-> vector', matrix.vector)
     print('-> constants', matrix.constants)
-
-    # exit(0)
-
-    r = Resolver(matrix)
-    graph_index = 0
+    print('-> tree', r.tree_map)
     print('start', r.current_cell.__dict__)
-    # while True:
-    try:
-        r.walk(graph_index)
-    except Completed as c:
-        for r in c.expression:
-            print(' '.join(str(i) for i in r))
+    index = 0
+
+    # while index <= 5:
+    #     index += 1
+    while True:
+        try:
+            r.set_entry_cell()
+            r.walk()
+        except Completed as e:
+            for r in e.expression:
+                print(' '.join(str(i) for i in r))
+            exit(0)
+
+        except InvalidPath as e:
+            # print('invalid path', e.expression, 'in path', e.message)
+            print('invalid path', e.message, 'to target', e.expression)
+            path = e.message
+            cell = e.expression
+            revert()
+            matrix.refresh()
+
+        except ConstantMismatch as e:
+            print('constant mismatch in', e.expression, 'using path', e.message)
+            path = e.message
+            cell = e.expression
+            revert()
+            matrix.refresh()
+            # for k, v in r.tree_map.items():
+            #     print(k, v)

@@ -22,7 +22,6 @@ class PathScanner(object):
         }
 
     def to_north(self, from_cell):
-        # print('to north', from_cell.__dict__)
         path = []
         x = from_cell.col
         for i in reversed(range(from_cell.row)):
@@ -32,7 +31,6 @@ class PathScanner(object):
         return path
 
     def to_east(self, from_cell):
-        # print('to east', from_cell.__dict__)
         path = []
         x = from_cell.row
         for i in range(from_cell.col + 1, self.dim):
@@ -42,7 +40,6 @@ class PathScanner(object):
         return path
 
     def to_south(self, from_cell):
-        # print('to south', from_cell.__dict__)
         path = []
         x = from_cell.col
         for i in range(from_cell.row + 1, self.dim):
@@ -52,7 +49,6 @@ class PathScanner(object):
         return path
 
     def to_west(self, from_cell):
-        # print('to west', from_cell.__dict__)
         path = []
         x = from_cell.row
         for i in reversed(range(from_cell.col)):
@@ -62,7 +58,6 @@ class PathScanner(object):
         return path
 
     def to_north_east(self, from_cell):
-        # print('to north-east', from_cell.__dict__)
         path = []
         x = from_cell.row
         for i in range(from_cell.col + 1, self.dim):
@@ -75,7 +70,6 @@ class PathScanner(object):
         return path
 
     def to_north_west(self, from_cell):
-        # print('to north-west', from_cell.__dict__)
         path = []
         x = from_cell.row
         for i in reversed(range(from_cell.col)):
@@ -88,7 +82,6 @@ class PathScanner(object):
         return path
 
     def to_south_east(self, from_cell):
-        # print('to south-east', from_cell.__dict__)
         path = []
         x = from_cell.row
         for i in range(from_cell.col + 1, self.dim):
@@ -101,7 +94,6 @@ class PathScanner(object):
         return path
 
     def to_south_west(self, from_cell):
-        # print('to south-west', from_cell.__dict__)
         path = []
         x = from_cell.row
         for i in reversed(range(from_cell.col)):
