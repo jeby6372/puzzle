@@ -27,18 +27,33 @@ conf_3 = '''3
 def revert():
     # remove edge from current node and from parent if single
     i = -1
-    node = path[i]
-    print('removing edge to', r.tree_map[node][r.tree_map[node].index(cell)], 'from node', node)
-    del (r.tree_map[node][r.tree_map[node].index(cell)])
+    # print('reverting path 1/2 i=', i, path)
+
+    if len(path) > 0:
+        node = path[i]
+        print('removing edge to', r.tree_map[node][r.tree_map[node].index(cell)], 'from node', node)
+        del (r.tree_map[node][r.tree_map[node].index(cell)])
+
     while True:
+        # remove parent edge
         if len(r.tree_map[node]) == 0:
-            parent = path[i-1]
-            print('removing edge to', r.tree_map[parent][r.tree_map[parent].index(node)], 'from node', parent)
+            parent = path[i - 1]
+            print('removing parent edge to', r.tree_map[parent][r.tree_map[parent].index(node)], 'from node', parent)
             del (r.tree_map[parent][r.tree_map[parent].index(node)])
+            print(r.tree_map[parent])
             i -= 1
             node = path[i]
         else:
             break
+
+    print('tree', r.tree_map)
+
+
+def print_output():
+    print('--------------------')
+    for data in matrix.data:
+        print('\t'.join([str(d) for d in data]))
+    print('--------------------')
 
 
 if __name__ == '__main__':
@@ -57,7 +72,7 @@ if __name__ == '__main__':
     print('start', r.current_cell.__dict__)
     index = 0
 
-    # while index <= 5:
+    # while index <= 9:
     #     index += 1
     while True:
         try:
@@ -69,12 +84,14 @@ if __name__ == '__main__':
             exit(0)
 
         except InvalidPath as e:
-            # print('invalid path', e.expression, 'in path', e.message)
             print('invalid path', e.message, 'to target', e.expression)
             path = e.message
             cell = e.expression
+            # print('with tree', r.tree_map)
             revert()
+            print_output()
             matrix.refresh()
+
 
         except ConstantMismatch as e:
             print('constant mismatch in', e.expression, 'using path', e.message)
@@ -82,5 +99,3 @@ if __name__ == '__main__':
             cell = e.expression
             revert()
             matrix.refresh()
-            # for k, v in r.tree_map.items():
-            #     print(k, v)

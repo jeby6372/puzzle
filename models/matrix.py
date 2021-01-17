@@ -8,6 +8,9 @@ class Cell(object):
         self.col = col
         self.value = value
 
+    def get_coords(self):
+        return self.row, self.col
+
 
 class Completed(object):
     def __init__(self, result):
@@ -38,4 +41,6 @@ class Matrix(object):
         self.vector[self.dim - 1].append('END')
 
     def refresh(self):
+
         self.data = [[int(cell.split()[0]) for cell in row] for row in self.out]
+        print('refreshing data', self.data)

@@ -17,18 +17,22 @@ class Resolver(object):
         self.matrix = matrix
         self.scanner = PathScanner(matrix.data)
         self.set_entry_cell()
+        # current run path
         self.path = []
         # build global tree paths
         self.init_tree()
 
     def walk(self):
 
-        # get cell available edges
+        # iterates the tree map
         edges = self.tree_map[(self.current_cell.row, self.current_cell.col)]
-        # print('current cell', self.current_cell.__dict__)
+        print('-> resolving cell', self.current_cell.get_coords())
+        print('edges found', edges)
         if len(edges) > 0:
             for row, col in edges:
                 target = Cell(row, col, self.current_cell.value + 1)
+                print('-> check cell target ', target.get_coords(), 'content',
+                      self.matrix.data[target.get_coords()[0]][target.get_coords()[1]])
 
                 if target.value == pow(self.matrix.dim, 2):
                     raise Completed(self.matrix.data)
@@ -38,7 +42,7 @@ class Resolver(object):
                     raise ConstantMismatch((row, col), self.path)
 
                 if self.matrix.data[row][col] == 0:
-                    # unused cell
+                    # unused cell : OK
                     self.matrix.data[target.row][target.col] = target.value
                     self.current_cell = target
                     break
@@ -62,7 +66,7 @@ class Resolver(object):
     def set_entry_cell(self):
         # get lower digit in the matrix (<> 0)
         self.path = []
-        print('tree', self.tree_map)
+
         digit = sys.maxsize
         for i, row in enumerate(self.matrix.data):
             for j, col in enumerate(row):
